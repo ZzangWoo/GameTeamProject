@@ -42,4 +42,6 @@ public:
 	void ChangeStoneXY(int x1, int x2, int y1, int y2);
 	void SetCount();
 	afx_msg void OnPaint();
+	CString m_player1;
+	CString m_player2;
 };

@@ -82,6 +82,7 @@ int CCreateRoomDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		PostQuitMessage(0);
 	}
 	nickName = p_dlg->m_edit_name;
+	m_clientSocket->nickname = p_dlg->m_edit_name;
 	//p_dlg->ShowWindow(SW_ERASE);
 
 	/********************** 처음 접속시 방리스트 불러오기 **************************/

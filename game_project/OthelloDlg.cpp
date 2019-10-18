@@ -18,6 +18,8 @@ COthelloDlg::COthelloDlg(CWnd* pParent /*=NULL*/)
 	, m_count(0)
 	, m_1_count(2)
 	, m_2_count(2)
+	, m_player1(_T(""))
+	, m_player2(_T("player2\n기다리는 중"))
 {
 	m_map = new int*[8];
 	m_map[0] = new int[8]{ 0,0,0,0,0,0,0,0 };
@@ -39,6 +41,8 @@ void COthelloDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STATIC_COUNT1, m_1_count);
 	DDX_Text(pDX, IDC_STATIC_COUNT2, m_2_count);
+	DDX_Text(pDX, IDC_STATIC1, m_player1);
+	DDX_Text(pDX, IDC_STATIC2, m_player2);
 }
 
 
@@ -103,8 +107,10 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-	Cgame_projectDlg *p_dlg = (Cgame_projectDlg*)GetParent();
+	CCreateRoomDlg *p_dlg = (CCreateRoomDlg*)GetParent();
 
+	m_clientSocket = p_dlg->m_clientSocket;
+	m_player1 = m_clientSocket->nickname;
 	/*m_clientSocket = new CClientSocket;
 	m_clientSocket->SetWnd(m_hWnd);
 	m_clientSocket->Create();
@@ -114,6 +120,8 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	p_dlg->ShowWindow(SW_HIDE);
 	*/
+
+
 	m_bitmap[0].LoadBitmap(IDB_RED);
 	m_bitmap[1].LoadBitmap(IDB_YELLOW);
 

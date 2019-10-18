@@ -16,6 +16,7 @@ public:
 	virtual void OnReceive(int nErrorCode);
 	virtual void OnClose(int nErrorCode);
 	HWND m_hWnd;
+	CString nickname;
 };
 
 
