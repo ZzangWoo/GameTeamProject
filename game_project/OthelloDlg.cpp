@@ -13,7 +13,7 @@
 IMPLEMENT_DYNAMIC(COthelloDlg, CDialog)
 
 COthelloDlg::COthelloDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(IDD_OTHELLODLG, pParent)
+	: CDialog(IDD_OTHELLO, pParent)
 	, m_turn(false)
 	, m_count(0)
 	, m_1_count(2)
@@ -105,7 +105,7 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	Cgame_projectDlg *p_dlg = (Cgame_projectDlg*)GetParent();
 
-	m_clientSocket = new CClientSocket;
+	/*m_clientSocket = new CClientSocket;
 	m_clientSocket->SetWnd(m_hWnd);
 	m_clientSocket->Create();
 	if (m_clientSocket->Connect(p_dlg->m_serverIP, PORT) == FALSE) {
@@ -113,8 +113,25 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		PostQuitMessage(0);
 	}
 	p_dlg->ShowWindow(SW_HIDE);
+	*/
 	m_bitmap[0].LoadBitmap(IDB_RED);
 	m_bitmap[1].LoadBitmap(IDB_YELLOW);
+
+	CBitmap *pOldBitmap;
+	CDC   MemDC, *pDC;
+
+	pDC = this->GetDC();
+	MemDC.CreateCompatibleDC(pDC);
+
+	pOldBitmap = MemDC.SelectObject(&m_bitmap[0]);
+	pDC->BitBlt(171, 171, 48, 48, &MemDC, 0, 0, SRCCOPY);
+	pDC->BitBlt(221, 221, 48, 48, &MemDC, 0, 0, SRCCOPY);
+	MemDC.SelectObject(pOldBitmap);
+
+	pOldBitmap = MemDC.SelectObject(&m_bitmap[1]);
+	pDC->BitBlt(221, 171, 48, 48, &MemDC, 0, 0, SRCCOPY);
+	pDC->BitBlt(171, 221, 48, 48, &MemDC, 0, 0, SRCCOPY);
+	MemDC.SelectObject(pOldBitmap);
 	return 0;
 }
 

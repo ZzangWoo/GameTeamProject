@@ -13,7 +13,7 @@ public:
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_OTHELLODLG };
+	enum { IDD = IDD_OTHELLO };
 #endif
 
 protected:
