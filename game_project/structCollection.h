@@ -21,6 +21,11 @@ struct readyMessage {
 	readyRecvMessage data;
 };
 
+struct roomInfo {
+	CString roomName;
+	int roomNum;
+};
+
 struct roomInfoRecvMessage {
 	TCHAR name[50];
 	int kind;

@@ -17,6 +17,7 @@ public:
 	virtual void OnClose(int nErrorCode);
 	HWND m_hWnd;
 	CString nickname;
+	roomInfo info;
 };
 
 

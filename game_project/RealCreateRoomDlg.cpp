@@ -58,6 +58,7 @@ void RealCreateRoomDlg::OnClickedBtnRoom()
 	msg->size = sizeof(roomInfoRecvMessage);
 	msg->data.kind = nSelect;
 	_tcscpy_s(msg->data.name, m_room_name);
+	m_clientSocket->info.roomName = m_room_name;
 	m_clientSocket->Send((char *)msg, sizeof(roomInfoMessage));
 	delete msg;
 

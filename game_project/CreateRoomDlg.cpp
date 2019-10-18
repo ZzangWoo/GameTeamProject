@@ -138,6 +138,8 @@ afx_msg LRESULT CCreateRoomDlg::OnClientRecvAllRoomList(WPARAM wParam, LPARAM lP
 afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam) {
 	createRoomStruct* crs = (createRoomStruct*)lParam;
 
+	m_clientSocket->info.roomNum = m_list_room.GetCount()-1;
+
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
 		dlg->Create(IDD_OTHELLO, this);
