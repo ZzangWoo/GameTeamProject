@@ -43,6 +43,8 @@ void COthelloDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_STATIC_COUNT2, m_2_count);
 	DDX_Text(pDX, IDC_STATIC1, m_player1);
 	DDX_Text(pDX, IDC_STATIC2, m_player2);
+	DDX_Control(pDX, IDC_EDIT_MSG, m_edit_msg);
+	DDX_Control(pDX, IDC_LIST_MSG, m_llist_msg);
 }
 
 
@@ -379,5 +381,20 @@ void COthelloDlg::SetCount() {
 void COthelloDlg::OnClickedBtnSend()
 {
 	// TODO: Add your control notification handler code here
+	CString str;
+	UpdateData(TRUE);
+	m_edit_msg.GetWindowTextW(str);
 
+	othelloMsg *msg = new othelloMsg;
+	msg->id = 10;
+	msg->size = sizeof(msgRecvMessage);
+	_tcscpy_s(msg->data.msg, str);
+	_tcscpy_s(msg->data.name, m_player1);
+	msg->data.roomID= m_clientSocket->info.roomNum;
+	m_clientSocket->Send((char*)msg, sizeof(msgMessage) * 2);
+
+	m_edit_msg.SetWindowTextW(_T(""));
+	UpdateData(FALSE);
+
+	delete msg;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ClientSocket.h"
+#include "afxwin.h"
 // COthelloDlg 대화 상자입니다.
 
 class COthelloDlg : public CDialog
@@ -45,4 +46,6 @@ public:
 	CString m_player1;
 	CString m_player2;
 	afx_msg void OnClickedBtnSend();
+	CEdit m_edit_msg;
+	CListBox m_llist_msg;
 };
