@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_WM_CREATE()
 	ON_BN_CLICKED(IDC_BTN_PASS, &COthelloDlg::OnClickedBtnPass)
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BTN_SEND, &COthelloDlg::OnClickedBtnSend)
 END_MESSAGE_MAP()
 
 
@@ -120,9 +121,8 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	p_dlg->ShowWindow(SW_HIDE);
 	*/
-	CString str;
-	str.Format(_T("[%d]%s"), m_clientSocket->info.roomNum, m_clientSocket->info.roomName);
-	SetWindowText(str);
+
+	SetWindowText(m_clientSocket->info.roomName);
 
 	m_bitmap[0].LoadBitmap(IDB_RED);
 	m_bitmap[1].LoadBitmap(IDB_YELLOW);
@@ -374,4 +374,10 @@ void COthelloDlg::SetCount() {
 	m_1_count = cnt1;
 	m_2_count = cnt2;
 	UpdateData(false);
+}
+
+void COthelloDlg::OnClickedBtnSend()
+{
+	// TODO: Add your control notification handler code here
+
 }

@@ -44,4 +44,5 @@ public:
 	afx_msg void OnPaint();
 	CString m_player1;
 	CString m_player2;
+	afx_msg void OnClickedBtnSend();
 };
