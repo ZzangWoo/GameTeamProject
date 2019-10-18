@@ -120,7 +120,9 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	p_dlg->ShowWindow(SW_HIDE);
 	*/
-
+	CString str;
+	str.Format(_T("[%d]%s"), m_clientSocket->info.roomNum, m_clientSocket->info.roomName);
+	SetWindowText(str);
 
 	m_bitmap[0].LoadBitmap(IDB_RED);
 	m_bitmap[1].LoadBitmap(IDB_YELLOW);
