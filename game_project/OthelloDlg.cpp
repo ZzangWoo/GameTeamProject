@@ -43,8 +43,8 @@ void COthelloDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_STATIC_COUNT2, m_2_count);
 	DDX_Text(pDX, IDC_STATIC1, m_player1);
 	DDX_Text(pDX, IDC_STATIC2, m_player2);
-	DDX_Control(pDX, IDC_EDIT_MSG, m_edit_msg);
-	DDX_Control(pDX, IDC_LIST_MSG, m_llist_msg);
+	DDX_Control(pDX, IDC_EDIT_OTHELLO_MSG, m_edit_msg);
+	DDX_Control(pDX, IDC_LIST_OTHELLO_MSG, m_llist_msg);
 }
 
 
@@ -53,7 +53,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_WM_CREATE()
 	ON_BN_CLICKED(IDC_BTN_PASS, &COthelloDlg::OnClickedBtnPass)
 	ON_WM_PAINT()
-	ON_BN_CLICKED(IDC_BTN_SEND, &COthelloDlg::OnClickedBtnSend)
+	ON_BN_CLICKED(IDC_BTN_OTHELLO_SEND, &COthelloDlg::OnClickedBtnSend)
 END_MESSAGE_MAP()
 
 
@@ -386,7 +386,7 @@ void COthelloDlg::OnClickedBtnSend()
 	m_edit_msg.GetWindowTextW(str);
 
 	othelloMsg *msg = new othelloMsg;
-	msg->id = 10;
+	msg->id = 50;
 	msg->size = sizeof(msgRecvMessage);
 	_tcscpy_s(msg->data.msg, str);
 	_tcscpy_s(msg->data.name, m_player1);
