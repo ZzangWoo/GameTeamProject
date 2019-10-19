@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_PASS, &COthelloDlg::OnClickedBtnPass)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BTN_OTHELLO_SEND, &COthelloDlg::OnClickedBtnSend)
+	ON_MESSAGE(WM_CLIENT_OTHELLO_MSG_RECV, &COthelloDlg::OnClientOthelloMsgRecv)
 END_MESSAGE_MAP()
 
 
@@ -112,8 +113,10 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	CCreateRoomDlg *p_dlg = (CCreateRoomDlg*)GetParent();
 
+	
 	m_clientSocket = p_dlg->m_clientSocket;
 	m_player1 = m_clientSocket->nickname;
+	m_clientSocket->SetWnd(this->GetSafeHwnd());
 	/*m_clientSocket = new CClientSocket;
 	m_clientSocket->SetWnd(m_hWnd);
 	m_clientSocket->Create();
@@ -144,6 +147,7 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	pDC->BitBlt(221, 171, 48, 48, &MemDC, 0, 0, SRCCOPY);
 	pDC->BitBlt(171, 221, 48, 48, &MemDC, 0, 0, SRCCOPY);
 	MemDC.SelectObject(pOldBitmap);
+
 	return 0;
 }
 
@@ -397,4 +401,15 @@ void COthelloDlg::OnClickedBtnSend()
 	UpdateData(FALSE);
 
 	delete msg;
+}
+
+
+afx_msg LRESULT COthelloDlg::OnClientOthelloMsgRecv(WPARAM wParam, LPARAM lParam)
+{
+	othelloMsgStruct* msg = (othelloMsgStruct*)lParam;
+	
+	m_llist_msg.InsertString(-1, msg->msg);
+	m_llist_msg.SetCurSel(m_llist_msg.GetCount() - 1);
+
+	return 0;
 }

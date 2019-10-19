@@ -143,6 +143,8 @@ afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam)
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
 		dlg->DoModal();
+		/*dlg->Create(IDD_OTHELLO, this);
+		dlg->ShowWindow(SW_SHOW);*/
 	}
 	else if (crs->kind == 1005) { // ¿À¸ñ
 

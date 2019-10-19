@@ -36,6 +36,13 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		SendMessage(m_hWnd, WM_CLIENT_RECV, 0, (LPARAM)msg);
 		delete msg;
 	}
+	// 오델로 방 메세지 받는 함수
+	else if (header[0] == 51) {
+		othelloMsgStruct * msg = new othelloMsgStruct;
+		ZeroMemory(msg, sizeof(othelloMsgStruct));
+		Receive((char*)msg, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_OTHELLO_MSG_RECV, 0, (LPARAM)msg);
+	}
 	/************************************************/
 	/**************** 방 리스트 받기 ****************/
 	else if (header[0] == 3001) {

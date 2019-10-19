@@ -48,4 +48,6 @@ public:
 	afx_msg void OnClickedBtnSend();
 	CEdit m_edit_msg;
 	CListBox m_llist_msg;
+protected:
+	afx_msg LRESULT OnClientOthelloMsgRecv(WPARAM wParam, LPARAM lParam);
 };
