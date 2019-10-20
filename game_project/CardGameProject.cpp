@@ -13,6 +13,10 @@ IMPLEMENT_DYNAMIC(CardGameProject, CDialog)
 
 CardGameProject::CardGameProject(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_CARDGAME, pParent)
+	, editPlayer1Point(_T(""))
+	, editPlayer2Point(_T(""))
+	, testEdit(_T(""))
+	, remainTime(_T(""))
 {
 
 }
@@ -24,6 +28,12 @@ CardGameProject::~CardGameProject()
 void CardGameProject::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT_PLAYER1_POINT, editPlayer1Point);
+	DDX_Text(pDX, IDC_EDIT_PLAYER2_POINT, editPlayer2Point);
+	DDX_Control(pDX, IDC_EDIT_SEND, cardGameMsg);
+	DDX_Text(pDX, IDC_EDIT_TEST, testEdit);
+	DDX_Text(pDX, IDC_EDIT_TIME, remainTime);
+	DDX_Control(pDX, IDC_LIST_MSG, listMsg);
 }
 
 
