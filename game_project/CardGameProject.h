@@ -1,4 +1,5 @@
 #pragma once
+#include "ClientSocket.h"
 #include "afxwin.h"
 
 
@@ -22,10 +23,15 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	CClientSocket *m_clientSocket;
 	CString editPlayer1Point;
 	CString editPlayer2Point;
 	CEdit cardGameMsg;
 	CString testEdit;
 	CString remainTime;
 	CListBox listMsg;
+	afx_msg void OnClickedButtonSend();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	CStatic player1Name;
+	CStatic player2Name;
 };

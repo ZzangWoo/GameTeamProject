@@ -33,6 +33,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 //	afx_msg void OnBtnPass();
+//	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -46,6 +47,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 //	ON_COMMAND(IDC_BTN_PASS, &CAboutDlg::OnBtnPass)
+//ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -188,4 +190,15 @@ void Cgame_projectDlg::OnClickedBtnConnect()
 	//this->OnClose(); // 왜 안닫히고 지랄이야 시벌롬이
 }
 
-
+//int CAboutDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
+//{
+//	if (CDialogEx::OnCreate(lpCreateStruct) == -1)
+//		return -1;
+//
+//	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+//	CCreateRoomDlg *p_dlg = (CCreateRoomDlg*)GetParent();
+//
+//
+//
+//	return 0;
+//}
