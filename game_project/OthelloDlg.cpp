@@ -127,6 +127,20 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	p_dlg->ShowWindow(SW_HIDE);
 	*/
+
+	// OOO´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù
+	CString str = _T("");
+	str.Format(_T("[%s]´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù."), p_dlg->nickName);
+
+	othelloMsg *msg = new othelloMsg;
+	msg->id = 50;
+	msg->size = sizeof(othelloMsgStruct);
+	_tcscpy_s(msg->data.msg, str);
+	_tcscpy_s(msg->data.name, m_clientSocket->nickname);
+	msg->data.roomID = m_clientSocket->info.roomNum;
+	m_clientSocket->Send((char*)msg, sizeof(othelloMsg));
+	delete msg;
+
 	SetWindowText(m_clientSocket->info.roomName);
 
 	m_bitmap[0].LoadBitmap(IDB_RED);
