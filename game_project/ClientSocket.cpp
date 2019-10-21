@@ -84,6 +84,23 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		delete crs;
 	}
 	/*********************************************************/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*************** 카드게임 시작하라는 요청 받는 함수 *************/
 	else if (header[0] == 5400) {
 		cardStartStruct* css = new cardStartStruct;
