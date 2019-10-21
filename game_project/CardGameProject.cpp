@@ -39,6 +39,7 @@ void CardGameProject::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_MSG, listMsg);
 	DDX_Control(pDX, IDC_PLAYER1_NICK, player1Name);
 	DDX_Control(pDX, IDC_PLAYER2_NICK, player2Name);
+	DDX_Control(pDX, IDC_START_BUTTON, startButton);
 }
 
 
@@ -46,6 +47,8 @@ BEGIN_MESSAGE_MAP(CardGameProject, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_SEND, &CardGameProject::OnClickedButtonSend)
 	ON_WM_CREATE()
 	ON_MESSAGE(WM_CLIENT_CARD_MSG_RECV, &CardGameProject::OnClientCardMsgRecv)
+	ON_BN_CLICKED(IDC_START_BUTTON, &CardGameProject::OnClickedStartButton)
+	ON_MESSAGE(WM_CLIENT_CARD_START, &CardGameProject::OnClientCardStart)
 END_MESSAGE_MAP()
 
 
@@ -126,4 +129,36 @@ void CardGameProject::OnClickedButtonSend()
 	delete msg;
 	
 	UpdateData(FALSE);
+}
+
+// 준비버튼 눌렀을 때
+void CardGameProject::OnClickedStartButton()
+{
+	if (isReady == FALSE) {
+		startButton.SetWindowTextW(_T("시작"));
+
+		cardReady* cr = new cardReady;
+		cr->id = 5400;
+		cr->size = sizeof(cardReadyStruct);
+		cr->data.roomID = m_clientSocket->info.roomNum;
+		cr->data.isReady = TRUE;
+		m_clientSocket->Send((char*)cr, sizeof(cardReady));
+		delete cr;
+
+		isReady = TRUE;
+	}
+	else {
+		AfxMessageBox(_T("이미 준비되었습니다"));
+	}
+}
+
+// 게임시작
+afx_msg LRESULT CardGameProject::OnClientCardStart(WPARAM wParam, LPARAM lParam) {
+	cardStartStruct* css = (cardStartStruct*)lParam;
+
+	if (css->start == TRUE) {
+		AfxMessageBox(_T("가위바위보 등장!!!"));
+	}
+
+	return 0;
 }

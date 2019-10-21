@@ -37,6 +37,10 @@ public:
 
 protected:
 	afx_msg LRESULT OnClientCardMsgRecv(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnClientCardStart(WPARAM wParam, LPARAM lParam);
 public:
 	CString nickName;
+	afx_msg void OnClickedStartButton();
+	bool isReady;
+	CButton startButton;
 };

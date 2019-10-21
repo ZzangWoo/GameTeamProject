@@ -117,6 +117,8 @@ struct othelloMsg {
 	othelloMsgStruct data;
 };
 
+
+/************************** 짝맞추기에 필요한 struct ***********************/
 // 카드게임 채팅 메세지
 struct cardMsgStruct {
 	TCHAR msg[2000];
@@ -129,3 +131,27 @@ struct cardMsg {
 	int size;
 	cardMsgStruct data;
 };
+
+// 게임시작 버튼
+struct cardReadyStruct {
+	int roomID;
+	bool isReady;
+};
+
+struct cardReady {
+	int id;
+	int size;
+	cardReadyStruct data;
+};
+
+// 게임시작하라는 요청
+struct cardStartStruct {
+	bool start;
+};
+
+struct cardStart {
+	int id;
+	int size;
+	cardStartStruct data;
+};
+/***************************************************************************/
