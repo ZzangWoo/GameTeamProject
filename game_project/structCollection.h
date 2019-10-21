@@ -93,6 +93,7 @@ struct attendRoom {
 struct createRoomStruct {
 	int kind;
 	int roomID;
+	TCHAR name[50];
 };
 
 struct createRoom {

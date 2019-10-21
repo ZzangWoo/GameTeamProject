@@ -46,4 +46,6 @@ public:
 	afx_msg void OnClickedBtnCreateroom();
 	CListBox m_list_room;
 	afx_msg void OnClickedBtnOpenroom();
+protected:
+	afx_msg LRESULT OnClientAttendRoom(WPARAM wParam, LPARAM lParam);
 };

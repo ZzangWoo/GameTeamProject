@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CCreateRoomDlg, CDialog)
 	ON_WM_CREATE()
 	ON_BN_CLICKED(IDC_BTN_CREATEROOM, &CCreateRoomDlg::OnClickedBtnCreateroom)
 	ON_BN_CLICKED(IDC_BTN_OPENROOM, &CCreateRoomDlg::OnClickedBtnOpenroom)
+	ON_MESSAGE(WM_CLIENT_ATTEND_ROOM, &CCreateRoomDlg::OnClientAttendRoom)
 END_MESSAGE_MAP()
 
 
@@ -113,6 +114,8 @@ afx_msg LRESULT CCreateRoomDlg::OnClientRecv(WPARAM wParam, LPARAM lParam)
 afx_msg LRESULT CCreateRoomDlg::OnClientRecvRoomList(WPARAM wParam, LPARAM lParam) {
 	sendRoomInfoStruct* sris = (sendRoomInfoStruct*)lParam;
 
+	m_clientSocket->info.roomName = sris->roomName;
+
 	m_list_room.InsertString(-1, sris->roomName);
 	m_list_room.SetCurSel(m_list_room.GetCount() - 1);
 
@@ -137,9 +140,8 @@ afx_msg LRESULT CCreateRoomDlg::OnClientRecvAllRoomList(WPARAM wParam, LPARAM lP
 
 afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam) {
 	createRoomStruct* crs = (createRoomStruct*)lParam;
-
 	m_clientSocket->info.roomNum = crs->roomID;
-
+	m_clientSocket->info.roomName = crs->name;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
 		dlg->DoModal();
@@ -181,4 +183,27 @@ void CCreateRoomDlg::OnClickedBtnOpenroom()
 
 	m_clientSocket->Send((char*)ar, sizeof(attendRoom));
 
+}
+
+
+afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
+{
+	createRoomStruct* crs = (createRoomStruct*)lParam;
+	m_clientSocket->info.roomNum = crs->roomID;
+	m_clientSocket->info.roomName = crs->name;
+	if (crs->kind == 1004) { // ¿Àµ¨·Î
+		COthelloDlg* dlg = new COthelloDlg;
+		dlg->DoModal();
+		/*dlg->Create(IDD_OTHELLO, this);
+		dlg->ShowWindow(SW_SHOW);*/
+	}
+	else if (crs->kind == 1005) { // ¿À¸ñ
+
+	}
+	else if (crs->kind == 1006) { // Â¦¸ÂÃß±â
+		CardGameProject* dlg = new CardGameProject;
+		dlg->Create(IDD_CARDGAME, this);
+		dlg->ShowWindow(SW_SHOW);
+	}
+	return 0;
 }

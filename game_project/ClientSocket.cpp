@@ -68,7 +68,12 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		delete crs;
 	}
 	/**************************************************/
-
+	else if (header[0] == 5001) {
+		createRoomStruct* crs = new createRoomStruct;
+		ZeroMemory(crs, sizeof(createRoomStruct));
+		Receive((char*)crs, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_ATTEND_ROOM, 0, (LPARAM)crs);
+	}
 	CSocket::OnReceive(nErrorCode);
 }
 

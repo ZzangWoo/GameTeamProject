@@ -173,13 +173,6 @@ void Cgame_projectDlg::OnClickedBtnConnect()
 	}
 	if (m_edit_name == "")
 		m_edit_name.Format(_T("%d"),m_hWnd);
-	/*m_createRoomDlg = new CCreateRoomDlg;
-	m_createRoomDlg->Create(IDD_CREATEROOMDLG, this);
-	m_createRoomDlg->ShowWindow(SW_SHOW);*/
-
-	/*COthelloDlg *dlg = new COthelloDlg;
-	dlg->Create(IDD_OTHELLODLG, this);
-	dlg->ShowWindow(SW_SHOW);*/
 
 	CCreateRoomDlg* dlg = new CCreateRoomDlg;
 	dlg->Create(IDD_CREATEROOMDLG, this);

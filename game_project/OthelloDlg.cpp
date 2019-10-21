@@ -113,7 +113,6 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	CCreateRoomDlg *p_dlg = (CCreateRoomDlg*)GetParent();
 
-	
 	m_clientSocket = p_dlg->m_clientSocket;
 	m_player1 = m_clientSocket->nickname;
 	m_clientSocket->SetWnd(this->GetSafeHwnd());
@@ -126,7 +125,6 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	p_dlg->ShowWindow(SW_HIDE);
 	*/
-
 	SetWindowText(m_clientSocket->info.roomName);
 
 	m_bitmap[0].LoadBitmap(IDB_RED);
