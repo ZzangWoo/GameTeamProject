@@ -55,6 +55,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BTN_OTHELLO_SEND, &COthelloDlg::OnClickedBtnSend)
 	ON_MESSAGE(WM_CLIENT_OTHELLO_MSG_RECV, &COthelloDlg::OnClientOthelloMsgRecv)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -115,6 +116,7 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_clientSocket = p_dlg->m_clientSocket;
 	m_player1 = m_clientSocket->nickname;
+	p_hWnd = m_clientSocket->m_hWnd;
 	m_clientSocket->SetWnd(this->GetSafeHwnd());
 	/*m_clientSocket = new CClientSocket;
 	m_clientSocket->SetWnd(m_hWnd);
@@ -410,4 +412,18 @@ afx_msg LRESULT COthelloDlg::OnClientOthelloMsgRecv(WPARAM wParam, LPARAM lParam
 	m_llist_msg.SetCurSel(m_llist_msg.GetCount() - 1);
 
 	return 0;
+}
+
+
+void COthelloDlg::OnDestroy()
+{
+	CDialog::OnDestroy();
+
+	// TODO: Add your message handler code here
+	createRoom *msg = new createRoom;
+	msg->id = 5005;
+	msg->size = sizeof(createRoomStruct);
+	msg->data.roomID = m_clientSocket->info.roomNum;
+	m_clientSocket->SetWnd(p_hWnd);
+	m_clientSocket->Send((char*)msg, sizeof(createRoom));
 }

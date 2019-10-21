@@ -34,6 +34,8 @@ protected:
 public:
 //	afx_msg void OnBtnPass();
 //	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+protected:
+//	afx_msg LRESULT OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -48,6 +50,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 //	ON_COMMAND(IDC_BTN_PASS, &CAboutDlg::OnBtnPass)
 //ON_WM_CREATE()
+//ON_MESSAGE(WM_CLIENT_REMOVE_GAMEROOM, &CAboutDlg::OnClientRemoveGameroom)
 END_MESSAGE_MAP()
 
 
@@ -180,6 +183,9 @@ void Cgame_projectDlg::OnClickedBtnConnect()
 	dlg->Create(IDD_CREATEROOMDLG, this);
 	dlg->ShowWindow(SW_SHOW);
 
+	//IP번호 입력하면 버튼기능 막기 
+	CButton* pBtn = (CButton*)GetDlgItem(IDC_BTN_CONNECT);
+	pBtn->EnableWindow(FALSE);
 	//this->OnClose(); // 왜 안닫히고 지랄이야 시벌롬이
 }
 
@@ -193,5 +199,11 @@ void Cgame_projectDlg::OnClickedBtnConnect()
 //
 //
 //
+//	return 0;
+//}
+
+
+//afx_msg LRESULT CAboutDlg::OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam)
+//{
 //	return 0;
 //}
