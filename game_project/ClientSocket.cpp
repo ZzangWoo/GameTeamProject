@@ -94,6 +94,14 @@ void CClientSocket::OnReceive(int nErrorCode) {
 	else if (header[0] == 5007) {
 		AfxMessageBox(_T("방이 꽉 찼습니다."));
 	}
+	/*************** 카드게임 시작하라는 요청 받는 함수 *************/
+	else if (header[0] == 5400) {
+		cardStartStruct* css = new cardStartStruct;
+		ZeroMemory(css, sizeof(cardStartStruct));
+		Receive((char*)css, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_CARD_START, 0, (LPARAM)css);
+	}
+	/****************************************************************/
 	CSocket::OnReceive(nErrorCode);
 }
 
