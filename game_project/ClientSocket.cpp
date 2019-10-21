@@ -74,7 +74,7 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		ZeroMemory(msg, sizeof(cardMsgStruct));
 		Receive((char*)msg, header[1]);
 		SendMessage(m_hWnd, WM_CLIENT_CARD_MSG_RECV, 0, (LPARAM)msg);
-
+	}
 	//방참가하는 함수
 	else if (header[0] == 5004) {
 		createRoomStruct* crs = new createRoomStruct;
