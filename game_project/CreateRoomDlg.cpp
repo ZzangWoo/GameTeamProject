@@ -153,8 +153,7 @@ afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam)
 	}
 	else if (crs->kind == 1006) { // Â¦¸ÂÃß±â
 		CardGameProject* dlg = new CardGameProject;
-		dlg->Create(IDD_CARDGAME, this);
-		dlg->ShowWindow(SW_SHOW);
+		dlg->DoModal();
 	}
 
 	return 0;
