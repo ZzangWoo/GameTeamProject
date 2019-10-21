@@ -68,6 +68,14 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		delete crs;
 	}
 	/**************************************************/
+	/************** 카드게임 방 메세지 받는 함수 *************/
+	else if (header[0] == 5001) {
+		cardMsgStruct *msg = new cardMsgStruct;
+		ZeroMemory(msg, sizeof(cardMsgStruct));
+		Receive((char*)msg, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_CARD_MSG_RECV, 0, (LPARAM)msg);
+	}
+	/*********************************************************/
 
 	CSocket::OnReceive(nErrorCode);
 }

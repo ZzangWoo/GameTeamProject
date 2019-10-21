@@ -21,6 +21,7 @@ CardGameProject::CardGameProject(CWnd* pParent /*=NULL*/)
 	, remainTime(_T(""))
 {
 
+	nickName = _T("");
 }
 
 CardGameProject::~CardGameProject()
@@ -44,23 +45,11 @@ void CardGameProject::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CardGameProject, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_SEND, &CardGameProject::OnClickedButtonSend)
 	ON_WM_CREATE()
+	ON_MESSAGE(WM_CLIENT_CARD_MSG_RECV, &CardGameProject::OnClientCardMsgRecv)
 END_MESSAGE_MAP()
 
 
 // CardGameProject 메시지 처리기입니다.
-
-
-void CardGameProject::OnClickedButtonSend()
-{
-	CString str;
-	UpdateData(TRUE);
-	cardGameMsg.GetWindowTextW(str);
-
-	cardMsg* cm = new cardMsg;
-	cm->id = 5000;
-	
-}
-
 
 int CardGameProject::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -70,10 +59,71 @@ int CardGameProject::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	CCreateRoomDlg *p_dlg = (CCreateRoomDlg*)GetParent();
 
+	//m_clientSocket = new CClientSocket;
 	m_clientSocket = p_dlg->m_clientSocket;
-	//player1Name.SetWindowTextW(m_clientSocket->nickname);
-	CString str = m_clientSocket->nickname;
-	AfxMessageBox(str);
+	m_clientSocket->SetWnd(this->GetSafeHwnd());
+
+	// 방제목 표시
+	SetWindowText(m_clientSocket->info.roomName);
+	
+	CString str = _T("");
+	str.Format(_T("[%s]님이 입장하셨습니다."), p_dlg->nickName);
+
+	cardMsg *msg = new cardMsg;
+	msg->id = 5000;
+	msg->size = sizeof(cardMsgStruct);
+	_tcscpy_s(msg->data.msg, str);
+	_tcscpy_s(msg->data.name, m_clientSocket->nickname);
+	msg->data.roomID = m_clientSocket->info.roomNum;
+	m_clientSocket->Send((char*)msg, sizeof(cardMsg));
+
+	CString test = _T("");
+	test.Format(_T("%s"), msg->data.msg);
+	
+	//AfxMessageBox(test);
+
+	//listMsg.SetWindowTextW(_T(""));
+	//UpdateData(FALSE);
+
+	delete msg;
+
+	//AfxMessageBox(test);
+
+	//listMsg.InsertString(-1, str);
+	//listMsg.SetCurSel(listMsg.GetCount() - 1);
 
 	return 0;
+}
+
+afx_msg LRESULT CardGameProject::OnClientCardMsgRecv(WPARAM wParam, LPARAM lParam)
+{
+	cardMsgStruct* msg = (cardMsgStruct*)lParam;
+
+	listMsg.InsertString(-1, msg->msg);
+	listMsg.SetCurSel(listMsg.GetCount() - 1);
+
+	return 0;
+}
+
+// 메세지보내기
+void CardGameProject::OnClickedButtonSend()
+{
+	CString str;
+	UpdateData(TRUE);
+	cardGameMsg.GetWindowTextW(str);
+
+	cardMsg* msg = new cardMsg;
+	msg->id = 5000;
+	msg->size = sizeof(cardMsgStruct);
+	_tcscpy_s(msg->data.msg, str);
+	_tcscpy_s(msg->data.name, m_clientSocket->nickname);
+	msg->data.roomID = m_clientSocket->info.roomNum;
+
+	m_clientSocket->Send((char*)msg, sizeof(cardMsgStruct));
+
+	cardGameMsg.SetWindowTextW(_T(""));
+	
+	delete msg;
+	
+	UpdateData(FALSE);
 }

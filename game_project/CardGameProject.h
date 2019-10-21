@@ -34,4 +34,9 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	CStatic player1Name;
 	CStatic player2Name;
+
+protected:
+	afx_msg LRESULT OnClientCardMsgRecv(WPARAM wParam, LPARAM lParam);
+public:
+	CString nickName;
 };
