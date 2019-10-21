@@ -68,7 +68,7 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		delete crs;
 	}
 	/**************************************************/
-	else if (header[0] == 5001) {
+	else if (header[0] == 5004) {
 		createRoomStruct* crs = new createRoomStruct;
 		ZeroMemory(crs, sizeof(createRoomStruct));
 		Receive((char*)crs, header[1]);
