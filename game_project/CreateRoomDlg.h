@@ -48,4 +48,7 @@ public:
 	afx_msg void OnClickedBtnOpenroom();
 protected:
 	afx_msg LRESULT OnClientAttendRoom(WPARAM wParam, LPARAM lParam);
+public:
+protected:
+	afx_msg LRESULT OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam);
 };

@@ -13,6 +13,7 @@
 #define WM_CLIENT_CARD_START WM_USER+5400
 
 #define WM_CLIENT_ATTEND_ROOM WM_USER+5004
+#define WM_CLIENT_REMOVE_GAMEROOM WM_USER+5006
 
 class CClientSocket : public CSocket
 {

@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(CCreateRoomDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_CREATEROOM, &CCreateRoomDlg::OnClickedBtnCreateroom)
 	ON_BN_CLICKED(IDC_BTN_OPENROOM, &CCreateRoomDlg::OnClickedBtnOpenroom)
 	ON_MESSAGE(WM_CLIENT_ATTEND_ROOM, &CCreateRoomDlg::OnClientAttendRoom)
+	ON_MESSAGE(WM_CLIENT_REMOVE_GAMEROOM, &CCreateRoomDlg::OnClientRemoveGameroom)
 END_MESSAGE_MAP()
 
 
@@ -204,5 +205,13 @@ afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
 		dlg->Create(IDD_CARDGAME, this);
 		dlg->ShowWindow(SW_SHOW);
 	}
+	return 0;
+}
+
+
+afx_msg LRESULT CCreateRoomDlg::OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam)
+{
+	int ID = (int)lParam;
+	m_list_room.DeleteString(ID);
 	return 0;
 }

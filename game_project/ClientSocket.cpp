@@ -84,32 +84,16 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		delete crs;
 	}
 	/*********************************************************/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*************** 카드게임 시작하라는 요청 받는 함수 *************/
-	else if (header[0] == 5400) {
-		cardStartStruct* css = new cardStartStruct;
-		ZeroMemory(css, sizeof(cardStartStruct));
-		Receive((char*)css, header[1]);
-		SendMessage(m_hWnd, WM_CLIENT_CARD_START, 0, (LPARAM)css);
+	//사람이 없을 때 방이 아예 사라지는 경우 오는 메세지
+	else if (header[0] == 5006) {
+		createRoomStruct *msg = new createRoomStruct;
+		ZeroMemory(msg, sizeof(createRoomStruct));
+		Receive((char*)msg, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_REMOVE_GAMEROOM, 0, (LPARAM)msg->roomID);
 	}
-	/****************************************************************/
-
+	else if (header[0] == 5007) {
+		AfxMessageBox(_T("방이 꽉 찼습니다."));
+	}
 	CSocket::OnReceive(nErrorCode);
 }
 

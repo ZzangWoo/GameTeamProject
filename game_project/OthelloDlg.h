@@ -50,4 +50,7 @@ public:
 	CListBox m_llist_msg;
 protected:
 	afx_msg LRESULT OnClientOthelloMsgRecv(WPARAM wParam, LPARAM lParam);
+public:
+	afx_msg void OnDestroy();
+	HWND p_hWnd;
 };
