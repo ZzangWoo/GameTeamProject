@@ -91,7 +91,9 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		Receive((char*)msg, header[1]);
 		SendMessage(m_hWnd, WM_CLIENT_REMOVE_GAMEROOM, 0, (LPARAM)msg->roomID);
 	}
-
+	else if (header[0] == 5007) {
+		AfxMessageBox(_T("πÊ¿Ã ≤À √°Ω¿¥œ¥Ÿ."));
+	}
 	CSocket::OnReceive(nErrorCode);
 }
 
