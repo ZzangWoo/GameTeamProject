@@ -49,60 +49,11 @@ BEGIN_MESSAGE_MAP(CardGameProject, CDialog)
 	ON_MESSAGE(WM_CLIENT_CARD_MSG_RECV, &CardGameProject::OnClientCardMsgRecv)
 	ON_BN_CLICKED(IDC_START_BUTTON, &CardGameProject::OnClickedStartButton)
 	ON_MESSAGE(WM_CLIENT_CARD_START, &CardGameProject::OnClientCardStart)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
 // CardGameProject 메시지 처리기입니다.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int CardGameProject::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -114,6 +65,7 @@ int CardGameProject::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//m_clientSocket = new CClientSocket;
 	m_clientSocket = p_dlg->m_clientSocket;
+	p_hWnd = m_clientSocket->m_hWnd;
 	m_clientSocket->SetWnd(this->GetSafeHwnd());
 
 	// 방제목 표시
@@ -211,4 +163,17 @@ afx_msg LRESULT CardGameProject::OnClientCardStart(WPARAM wParam, LPARAM lParam)
 	}
 
 	return 0;
+}
+
+void CardGameProject::OnDestroy()
+{
+	CDialog::OnDestroy();
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	createRoom* msg = new createRoom;
+	msg->id = 5005;
+	msg->size = sizeof(createRoomStruct);
+	msg->data.roomID = m_clientSocket->info.roomNum;
+	m_clientSocket->SetWnd(p_hWnd);
+	m_clientSocket->Send((char*)msg, sizeof(createRoom));	
 }

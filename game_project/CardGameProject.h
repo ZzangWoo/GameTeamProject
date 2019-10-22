@@ -43,4 +43,6 @@ public:
 	afx_msg void OnClickedStartButton();
 	bool isReady;
 	CButton startButton;
+	afx_msg void OnDestroy();
+	HWND p_hWnd;
 };
