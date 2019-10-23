@@ -54,4 +54,6 @@ protected:
 public:
 	afx_msg void OnDestroy();
 	HWND p_hWnd;
+protected:
+	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
 };

@@ -147,9 +147,9 @@ afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam)
 	m_clientSocket->info.roomKind = crs->kind;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
-		dlg->DoModal();
-		/*dlg->Create(IDD_OTHELLO, this);
-		dlg->ShowWindow(SW_SHOW);*/
+		//dlg->DoModal();
+		dlg->Create(IDD_OTHELLO, this);
+		dlg->ShowWindow(SW_SHOW);
 	}
 	else if (crs->kind == 1005) { // ¿À¸ñ
 
@@ -192,7 +192,7 @@ void CCreateRoomDlg::OnClickedBtnOpenroom()
 	ar->id = 4000;
 	ar->size = sizeof(attendRoomStruct);
 	ar->data.roomPosition = currentRoomPosition;
-
+	_tcscpy_s(ar->data.ClientName, m_clientSocket->nickname);
 	m_clientSocket->Send((char*)ar, sizeof(attendRoom));
 
 }
@@ -206,9 +206,9 @@ afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
 	m_clientSocket->info.roomKind = crs->kind;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
-		dlg->DoModal();
-		/*dlg->Create(IDD_OTHELLO, this);
-		dlg->ShowWindow(SW_SHOW);*/
+		//dlg->DoModal();
+		dlg->Create(IDD_OTHELLO, this);
+		dlg->ShowWindow(SW_SHOW);
 	}
 	else if (crs->kind == 1005) { // ¿À¸ñ
 
