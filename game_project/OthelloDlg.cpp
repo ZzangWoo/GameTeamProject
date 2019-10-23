@@ -55,6 +55,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BTN_OTHELLO_SEND, &COthelloDlg::OnClickedBtnSend)
 	ON_MESSAGE(WM_CLIENT_OTHELLO_MSG_RECV, &COthelloDlg::OnClientOthelloMsgRecv)
+	ON_MESSAGE(WM_CLIENT_RECV_ROOM_ID_TO_CARD, &COthelloDlg::OnClientRecvRoomIDToCard)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
@@ -424,6 +425,17 @@ afx_msg LRESULT COthelloDlg::OnClientOthelloMsgRecv(WPARAM wParam, LPARAM lParam
 	
 	m_llist_msg.InsertString(-1, msg->msg);
 	m_llist_msg.SetCurSel(m_llist_msg.GetCount() - 1);
+
+	return 0;
+}
+
+afx_msg LRESULT COthelloDlg::OnClientRecvRoomIDToCard(WPARAM wParam, LPARAM lParam) {
+	//AfxMessageBox(_T("µé¾î¿È"));
+	int deletedRoomID = (int)lParam;
+
+	if (m_clientSocket->info.roomNum > deletedRoomID) {
+		m_clientSocket->info.roomNum--;
+	}
 
 	return 0;
 }

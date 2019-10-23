@@ -99,10 +99,14 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		ZeroMemory(srIDs, sizeof(sendRoomIDStruct));
 		Receive((char*)srIDs, header[1]);
 
-		CString str;
-		str.Format(_T("%d | %d"), srIDs->roomID, srIDs->roomKind);
-		AfxMessageBox(str);
+		//CString str;
+		//str.Format(_T("%d | %d"), srIDs->roomID, srIDs->roomKind);
+		//AfxMessageBox(str);
 
+		SendMessage(m_hWnd, WM_CLIENT_RECV_ROOM_ID_TO_CARD, 0, (LPARAM)srIDs->roomID);
+		//SendMessage(m_hWnd, WM_CLIENT_RECV_ROOM_ID_TO_OTHELLO, 0, (LPARAM)srIDs->roomID);
+
+		/*
 		if (srIDs->roomKind == 1004) {
 
 		}
@@ -110,6 +114,7 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		else if (srIDs->roomKind == 1006) {
 			SendMessage(m_hWnd, WM_CLIENT_RECV_ROOM_ID_TO_CARD, 0, (LPARAM)srIDs->roomID);
 		}
+		*/
 		
 		delete srIDs;
 	}
