@@ -36,6 +36,8 @@ public:
 //	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 protected:
 //	afx_msg LRESULT OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam);
+public:
+//	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -51,6 +53,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 //	ON_COMMAND(IDC_BTN_PASS, &CAboutDlg::OnBtnPass)
 //ON_WM_CREATE()
 //ON_MESSAGE(WM_CLIENT_REMOVE_GAMEROOM, &CAboutDlg::OnClientRemoveGameroom)
+//ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -188,22 +191,3 @@ void Cgame_projectDlg::OnClickedBtnConnect()
 	pBtn->EnableWindow(FALSE);
 	//this->OnClose(); // 왜 안닫히고 지랄이야 시벌롬이
 }
-
-//int CAboutDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
-//{
-//	if (CDialogEx::OnCreate(lpCreateStruct) == -1)
-//		return -1;
-//
-//	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-//	CCreateRoomDlg *p_dlg = (CCreateRoomDlg*)GetParent();
-//
-//
-//
-//	return 0;
-//}
-
-
-//afx_msg LRESULT CAboutDlg::OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam)
-//{
-//	return 0;
-//}

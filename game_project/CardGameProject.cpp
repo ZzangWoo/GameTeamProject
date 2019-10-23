@@ -51,7 +51,6 @@ BEGIN_MESSAGE_MAP(CardGameProject, CDialog)
 	ON_BN_CLICKED(IDC_START_BUTTON, &CardGameProject::OnClickedStartButton)
 	ON_MESSAGE(WM_CLIENT_CARD_START, &CardGameProject::OnClientCardStart)
 	ON_WM_DESTROY()
-	ON_BN_CLICKED(IDC_CARD_EXIT_BUTTON, &CardGameProject::OnClickedCardExitButton)
 	ON_MESSAGE(WM_CLIENT_RECV_ROOM_ID_TO_CARD, &CardGameProject::OnClientRecvRoomIDToCard)
 END_MESSAGE_MAP()
 

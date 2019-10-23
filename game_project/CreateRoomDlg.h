@@ -1,10 +1,10 @@
 #pragma once
 #include "ClientSocket.h"
-#include "RealCreateRoomDlg.h"
 #include "afxwin.h"
-#include "OthelloDlg.h"
+
+#include "RealCreateRoomDlg.h"
 #include "CardGameProject.h"
-#include "Rock.h"
+#include "OthelloDlg.h"
 
 // CCreateRoomDlg 대화 상자입니다.
 

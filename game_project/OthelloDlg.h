@@ -2,8 +2,9 @@
 
 #include "ClientSocket.h"
 #include "afxwin.h"
-// COthelloDlg 대화 상자입니다.
 
+// COthelloDlg 대화 상자입니다.
+class Rock;
 class COthelloDlg : public CDialog
 {
 	DECLARE_DYNAMIC(COthelloDlg)
@@ -28,6 +29,11 @@ public:
 	UINT m_1_count;
 	UINT m_2_count;
 	CBitmap m_bitmap[2];
+	HWND p_hWnd;
+	int m_stone_color;
+	Rock* r_dlg;
+	CString m_player1;
+	CString m_player2;
 	int m_count;
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -43,8 +49,6 @@ public:
 	void ChangeStoneXY(int x1, int x2, int y1, int y2);
 	void SetCount();
 	afx_msg void OnPaint();
-	CString m_player1;
-	CString m_player2;
 	afx_msg void OnClickedBtnSend();
 	CEdit m_edit_msg;
 	CListBox m_llist_msg;
@@ -53,11 +57,13 @@ protected:
 	afx_msg LRESULT OnClientRecvRoomIDToCard(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnDestroy();
-	HWND p_hWnd;
+
 protected:
 	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnClickedBtnReady();
 protected:
 	afx_msg LRESULT OnClientOthelloAllReady(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnClientRspResult(WPARAM wParam, LPARAM lParam);
+
 };

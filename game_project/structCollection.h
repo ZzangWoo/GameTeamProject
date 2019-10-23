@@ -183,3 +183,14 @@ struct cardStart {
 	cardStartStruct data;
 };
 /***************************************************************************/
+
+//가위바위보 선택지
+struct choiceStruct {
+	int choice;
+	int roomID;
+};
+struct choiceMessage {
+	int id;
+	int size;
+	choiceStruct data;
+};

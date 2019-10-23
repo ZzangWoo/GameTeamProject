@@ -6,6 +6,7 @@
 #include "OthelloDlg.h"
 #include "afxdialogex.h"
 
+#include "Rock.h"
 #include "game_projectDlg.h"
 #define PORT 9999
 // COthelloDlg 대화 상자입니다.
@@ -20,6 +21,7 @@ COthelloDlg::COthelloDlg(CWnd* pParent /*=NULL*/)
 	, m_2_count(2)
 	, m_player1(_T(""))
 	, m_player2(_T("player2\n기다리는 중"))
+	, m_stone_color(0)
 {
 	m_map = new int*[8];
 	m_map[0] = new int[8]{ 0,0,0,0,0,0,0,0 };
@@ -60,6 +62,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_MESSAGE(WM_CLIENT_PLAYER_NAME, &COthelloDlg::OnClientPlayerName)
 	ON_BN_CLICKED(IDC_BTN_READY, &COthelloDlg::OnClickedBtnReady)
 	ON_MESSAGE(WM_CLIENT_OTHELLO_ALL_READY, &COthelloDlg::OnClientOthelloAllReady)
+	ON_MESSAGE(WM_CLIENT_RSP_RESULT, &COthelloDlg::OnClientRspResult)
 END_MESSAGE_MAP()
 
 
@@ -478,6 +481,32 @@ void COthelloDlg::OnClickedBtnReady()
 
 afx_msg LRESULT COthelloDlg::OnClientOthelloAllReady(WPARAM wParam, LPARAM lParam)
 {
+	r_dlg = new Rock();
+	r_dlg->DoModal();
+	return 0;
+}
 
+
+afx_msg LRESULT COthelloDlg::OnClientRspResult(WPARAM wParam, LPARAM lParam)
+{
+	int choice = (int)lParam;
+	CString str;
+
+	if (choice == 0) {
+		str.Format(_T("비겼습니다! 다시 해주세요!"));
+
+	}
+	else if (choice == -1) {
+		r_dlg->EndDialog(IDOK);
+		str.Format(_T("이겼습니다. 먼저 시작합니다."));
+		m_turn = true;
+		m_stone_color = 0;
+	}
+	else {
+		r_dlg->EndDialog(IDOK);
+		str.Format(_T("졌습니다. %s님이 먼저 시작합니다."), m_player2);
+		m_stone_color = 1;
+	}
+	AfxMessageBox(str);
 	return 0;
 }
