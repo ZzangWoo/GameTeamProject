@@ -31,6 +31,8 @@ struct roomInfoRecvMessage {
 	TCHAR name[50];
 	int kind;
 	bool ok;
+	TCHAR ClientName[50];
+
 };
 
 struct roomInfoMessage {
@@ -81,6 +83,8 @@ struct sendAllRoomList {
 /*********************** 방 목록 클릭하고 참가하기 눌렀을 때 *************************/
 struct attendRoomStruct {
 	int roomPosition;
+	TCHAR ClientName[50];
+
 };
 
 struct attendRoom {
@@ -143,6 +147,17 @@ struct cardMsg {
 	int size;
 	cardMsgStruct data;
 };
+
+struct playerStruct {
+	TCHAR name[50];
+};
+
+struct playerMessage {
+	int id;
+	int size;
+	playerStruct data;
+};
+
 
 // 게임시작 버튼
 struct cardReadyStruct {
