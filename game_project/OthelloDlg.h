@@ -56,4 +56,6 @@ public:
 	HWND p_hWnd;
 protected:
 	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
+public:
+	afx_msg void OnClickedBtnReady();
 };

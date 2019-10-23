@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_MESSAGE(WM_CLIENT_RECV_ROOM_ID_TO_CARD, &COthelloDlg::OnClientRecvRoomIDToCard)
 	ON_WM_DESTROY()
 	ON_MESSAGE(WM_CLIENT_PLAYER_NAME, &COthelloDlg::OnClientPlayerName)
+	ON_BN_CLICKED(IDC_BTN_READY, &COthelloDlg::OnClickedBtnReady)
 END_MESSAGE_MAP()
 
 
@@ -120,16 +121,6 @@ int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_player1 = m_clientSocket->nickname;
 	p_hWnd = m_clientSocket->m_hWnd;
 	m_clientSocket->SetWnd(this->GetSafeHwnd());
-	/*m_clientSocket = new CClientSocket;
-	m_clientSocket->SetWnd(m_hWnd);
-	m_clientSocket->Create();
-	if (m_clientSocket->Connect(p_dlg->m_serverIP, PORT) == FALSE) {
-		AfxMessageBox(_T("ERROR: Failed connected server!!"));
-		PostQuitMessage(0);
-	}
-	p_dlg->ShowWindow(SW_HIDE);
-	*/
-
 	// OOO님이 입장하셨습니다
 	CString str = _T("");
 	str.Format(_T("[%s]님이 입장하셨습니다."), p_dlg->nickName);
@@ -463,4 +454,22 @@ afx_msg LRESULT COthelloDlg::OnClientPlayerName(WPARAM wParam, LPARAM lParam)
 	m_player2 = p2;
 	UpdateData(FALSE);
 	return 0;
+}
+
+
+void COthelloDlg::OnClickedBtnReady()
+{
+	// TODO: Add your control notification handler code here
+	if (m_player2 != _T("player2\n기다리는 중")) {
+		readyMessage *msg = new readyMessage;
+		msg->id = 3;
+		msg->size = sizeof(readyRecvMessage);
+		msg->data.roomID = m_clientSocket->info.roomNum;
+		m_clientSocket->Send((char*)msg, sizeof(readyRecvMessage));
+		delete msg;
+		CButton* pBtn = (CButton*)GetDlgItem(IDC_BTN_READY);
+		pBtn->EnableWindow(FALSE);
+	}
+	else
+		AfxMessageBox(_T("플레이어를 기다리는 중입니다."));
 }
