@@ -24,6 +24,7 @@ struct readyMessage {
 struct roomInfo {
 	CString roomName;
 	int roomNum;
+	int roomKind;
 };
 
 struct roomInfoRecvMessage {
@@ -93,6 +94,7 @@ struct attendRoom {
 struct createRoomStruct {
 	int kind;
 	int roomID;
+	int roomKind;
 	TCHAR name[50];
 };
 
@@ -102,7 +104,17 @@ struct createRoom {
 	createRoomStruct data;
 };
 /*****************************************************************************************/
+// 방 리스트 삭제 후 게임방에 들어가있는 클라이언트한테	보내는 구조체
+struct sendRoomIDStruct {
+	int roomID;
+	int roomKind;
+};
 
+struct sendRoomID {
+	int id;
+	int size;
+	sendRoomIDStruct data;
+};
 
 // 오델로 채팅 메세지
 struct othelloMsgStruct{

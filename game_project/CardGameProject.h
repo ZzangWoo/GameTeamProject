@@ -38,6 +38,7 @@ public:
 protected:
 	afx_msg LRESULT OnClientCardMsgRecv(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClientCardStart(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnClientRecvRoomIDToCard(WPARAM wParam, LPARAM lParam);
 public:
 	CString nickName;
 	afx_msg void OnClickedStartButton();
@@ -45,4 +46,6 @@ public:
 	CButton startButton;
 	afx_msg void OnDestroy();
 	HWND p_hWnd;
+	afx_msg void OnClickedCardExitButton();
+	int roomKind;
 };
