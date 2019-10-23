@@ -51,4 +51,6 @@ protected:
 public:
 protected:
 	afx_msg LRESULT OnClientRemoveGameroom(WPARAM wParam, LPARAM lParam);
+public:
+	int roomKind;
 };

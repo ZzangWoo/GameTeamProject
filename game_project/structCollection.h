@@ -24,14 +24,13 @@ struct readyMessage {
 struct roomInfo {
 	CString roomName;
 	int roomNum;
+	int roomKind;
 };
 
 struct roomInfoRecvMessage {
 	TCHAR name[50];
 	int kind;
 	bool ok;
-	TCHAR ClientName[50];
-
 };
 
 struct roomInfoMessage {
@@ -82,8 +81,6 @@ struct sendAllRoomList {
 /*********************** 방 목록 클릭하고 참가하기 눌렀을 때 *************************/
 struct attendRoomStruct {
 	int roomPosition;
-	TCHAR ClientName[50];
-
 };
 
 struct attendRoom {
@@ -97,6 +94,7 @@ struct attendRoom {
 struct createRoomStruct {
 	int kind;
 	int roomID;
+	int roomKind;
 	TCHAR name[50];
 };
 
@@ -106,7 +104,17 @@ struct createRoom {
 	createRoomStruct data;
 };
 /*****************************************************************************************/
+// 방 리스트 삭제 후 게임방에 들어가있는 클라이언트한테	보내는 구조체
+struct sendRoomIDStruct {
+	int roomID;
+	int roomKind;
+};
 
+struct sendRoomID {
+	int id;
+	int size;
+	sendRoomIDStruct data;
+};
 
 // 오델로 채팅 메세지
 struct othelloMsgStruct{
@@ -121,6 +129,8 @@ struct othelloMsg {
 	othelloMsgStruct data;
 };
 
+
+/************************** 짝맞추기에 필요한 struct ***********************/
 // 카드게임 채팅 메세지
 struct cardMsgStruct {
 	TCHAR msg[2000];
@@ -134,12 +144,26 @@ struct cardMsg {
 	cardMsgStruct data;
 };
 
-struct playerStruct {
-	TCHAR name[50];
+// 게임시작 버튼
+struct cardReadyStruct {
+	int roomID;
+	bool isReady;
 };
 
-struct playerMessage {
+struct cardReady {
 	int id;
 	int size;
-	playerStruct data;
+	cardReadyStruct data;
 };
+
+// 게임시작하라는 요청
+struct cardStartStruct {
+	bool start;
+};
+
+struct cardStart {
+	int id;
+	int size;
+	cardStartStruct data;
+};
+/***************************************************************************/

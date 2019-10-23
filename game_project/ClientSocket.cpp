@@ -94,13 +94,33 @@ void CClientSocket::OnReceive(int nErrorCode) {
 	else if (header[0] == 5007) {
 		AfxMessageBox(_T("방이 꽉 찼습니다."));
 	}
-	else if (header[0] == 5010) {
-		playerStruct *msg = new playerStruct;
-		ZeroMemory(msg,sizeof(playerStruct));
-		Receive((char*)msg, header[1]);
-		SendMessage(m_hWnd, WM_CLIENT_PLAYER_NAME, 0, (LPARAM)((LPCTSTR)msg->name));
-		delete msg;
+	else if (header[0] == 5008) {
+		sendRoomIDStruct* srIDs = new sendRoomIDStruct;
+		ZeroMemory(srIDs, sizeof(sendRoomIDStruct));
+		Receive((char*)srIDs, header[1]);
+
+		CString str;
+		str.Format(_T("%d | %d"), srIDs->roomID, srIDs->roomKind);
+		AfxMessageBox(str);
+
+		if (srIDs->roomKind == 1004) {
+
+		}
+		// cardgame
+		else if (srIDs->roomKind == 1006) {
+			SendMessage(m_hWnd, WM_CLIENT_RECV_ROOM_ID_TO_CARD, 0, (LPARAM)srIDs->roomID);
+		}
+		
+		delete srIDs;
 	}
+	/*************** 카드게임 시작하라는 요청 받는 함수 *************/
+	else if (header[0] == 5400) {
+		cardStartStruct* css = new cardStartStruct;
+		ZeroMemory(css, sizeof(cardStartStruct));
+		Receive((char*)css, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_CARD_START, 0, (LPARAM)css);
+	}
+	/****************************************************************/
 	CSocket::OnReceive(nErrorCode);
 }
 

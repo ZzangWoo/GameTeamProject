@@ -16,6 +16,7 @@ CCreateRoomDlg::CCreateRoomDlg(CWnd* pParent /*=NULL*/)
 	, nickName(_T(""))
 {
 
+	roomKind = 0;
 }
 
 CCreateRoomDlg::~CCreateRoomDlg()
@@ -143,6 +144,7 @@ afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam)
 	createRoomStruct* crs = (createRoomStruct*)lParam;
 	m_clientSocket->info.roomNum = crs->roomID;
 	m_clientSocket->info.roomName = crs->name;
+	m_clientSocket->info.roomKind = crs->kind;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
 		//dlg->DoModal();
@@ -154,8 +156,18 @@ afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam)
 	}
 	else if (crs->kind == 1006) { // Â¦¸ÂÃß±â
 		CardGameProject* dlg = new CardGameProject;
+		//dlg->Create(IDD_CARDGAME, this);
+		//dlg->ShowWindow(SW_SHOW);
 		dlg->DoModal();
 	}
+
+	//roomKind = crs->kind;
+
+	//CButton* attendButton = (CButton*)GetDlgItem(IDC_BTN_OPENROOM);
+	//CButton* createButton = (CButton*)GetDlgItem(IDC_BTN_CREATEROOM);
+
+	//attendButton->EnableWindow(FALSE);
+	//createButton->EnableWindow(FALSE);
 
 	return 0;
 }
@@ -191,6 +203,7 @@ afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
 	createRoomStruct* crs = (createRoomStruct*)lParam;
 	m_clientSocket->info.roomNum = crs->roomID;
 	m_clientSocket->info.roomName = crs->name;
+	m_clientSocket->info.roomKind = crs->kind;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
 		//dlg->DoModal();
@@ -202,9 +215,14 @@ afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
 	}
 	else if (crs->kind == 1006) { // Â¦¸ÂÃß±â
 		CardGameProject* dlg = new CardGameProject;
-		dlg->Create(IDD_CARDGAME, this);
-		dlg->ShowWindow(SW_SHOW);
+		dlg->DoModal();
+		//dlg->Create(IDD_CARDGAME, this);
+		//dlg->ShowWindow(SW_SHOW);
+		
 	}
+	
+	
+
 	return 0;
 }
 
