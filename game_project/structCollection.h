@@ -12,7 +12,7 @@ struct msgMessage {
 };
 
 struct readyRecvMessage {
-	int ready;
+	int roomID;
 };
 
 struct readyMessage {

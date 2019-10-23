@@ -36,6 +36,10 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		SendMessage(m_hWnd, WM_CLIENT_RECV, 0, (LPARAM)msg);
 		delete msg;
 	}
+	//오델로 레디 버튼 
+	if (header[0] == 4) {
+		AfxMessageBox(_T("준비완료!"));
+	}
 	// 오델로 방 메세지 받는 함수
 	else if (header[0] == 51) {
 		othelloMsgStruct * msg = new othelloMsgStruct;

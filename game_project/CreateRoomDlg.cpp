@@ -206,9 +206,9 @@ afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
 	m_clientSocket->info.roomKind = crs->kind;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
-		//dlg->DoModal();
-		dlg->Create(IDD_OTHELLO, this);
-		dlg->ShowWindow(SW_SHOW);
+		dlg->DoModal();
+		/*dlg->Create(IDD_OTHELLO, this);
+		dlg->ShowWindow(SW_SHOW);*/
 	}
 	else if (crs->kind == 1005) { // ¿À¸ñ
 
