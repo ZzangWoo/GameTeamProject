@@ -129,10 +129,24 @@ afx_msg LRESULT CCreateRoomDlg::OnClientRecvAllRoomList(WPARAM wParam, LPARAM lP
 
 	CString str;
 	str.Format(_T("%s"), sarls->roomNameList);
-	m_list_room.InsertString(-1, str);
-	m_list_room.SetCurSel(m_list_room.GetCount() - 1);
-	
 
+	//CString test;
+	//test.Format(_T("%d"), sarls->count);
+	//AfxMessageBox(test);
+
+	if (sarls->count == 0) {
+		m_list_room.ResetContent();
+		m_list_room.InsertString(-1, str);
+		m_list_room.SetCurSel(m_list_room.GetCount() - 1);
+	}
+	else if (sarls->count == -1) {
+		m_list_room.ResetContent();
+	}
+	else {
+		m_list_room.InsertString(-1, str);
+		m_list_room.SetCurSel(m_list_room.GetCount() - 1);
+	}
+	
 	/*if (sarls->roomNameList != NULL) {
 		m_list_room.InsertString(-1, sarls->roomNameList[0]);
 	}*/
@@ -147,9 +161,9 @@ afx_msg LRESULT CCreateRoomDlg::OnClientCreateRoom(WPARAM wParam, LPARAM lParam)
 	m_clientSocket->info.roomKind = crs->kind;
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
-		//dlg->DoModal();
-		dlg->Create(IDD_OTHELLO, this);
-		dlg->ShowWindow(SW_SHOW);
+		dlg->DoModal();
+		//dlg->Create(IDD_OTHELLO, this);
+		//dlg->ShowWindow(SW_SHOW);
 	}
 	else if (crs->kind == 1005) { // ¿À¸ñ
 
@@ -207,8 +221,8 @@ afx_msg LRESULT CCreateRoomDlg::OnClientAttendRoom(WPARAM wParam, LPARAM lParam)
 	if (crs->kind == 1004) { // ¿Àµ¨·Î
 		COthelloDlg* dlg = new COthelloDlg;
 		dlg->DoModal();
-		/*dlg->Create(IDD_OTHELLO, this);
-		dlg->ShowWindow(SW_SHOW);*/
+		//dlg->Create(IDD_OTHELLO, this);
+		//dlg->ShowWindow(SW_SHOW);
 	}
 	else if (crs->kind == 1005) { // ¿À¸ñ
 
