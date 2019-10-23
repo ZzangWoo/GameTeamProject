@@ -94,6 +94,13 @@ void CClientSocket::OnReceive(int nErrorCode) {
 	else if (header[0] == 5007) {
 		AfxMessageBox(_T("¹æÀÌ ²Ë Ã¡½À´Ï´Ù."));
 	}
+	else if (header[0] == 5010) {
+		playerStruct *msg = new playerStruct;
+		ZeroMemory(msg,sizeof(playerStruct));
+		Receive((char*)msg, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_PLAYER_NAME, 0, (LPARAM)((LPCTSTR)msg->name));
+		delete msg;
+	}
 	CSocket::OnReceive(nErrorCode);
 }
 

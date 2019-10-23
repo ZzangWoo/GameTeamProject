@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_OTHELLO_SEND, &COthelloDlg::OnClickedBtnSend)
 	ON_MESSAGE(WM_CLIENT_OTHELLO_MSG_RECV, &COthelloDlg::OnClientOthelloMsgRecv)
 	ON_WM_DESTROY()
+	ON_MESSAGE(WM_CLIENT_PLAYER_NAME, &COthelloDlg::OnClientPlayerName)
 END_MESSAGE_MAP()
 
 
@@ -440,4 +441,13 @@ void COthelloDlg::OnDestroy()
 	msg->data.roomID = m_clientSocket->info.roomNum;
 	m_clientSocket->SetWnd(p_hWnd);
 	m_clientSocket->Send((char*)msg, sizeof(createRoom));
+}
+
+
+afx_msg LRESULT COthelloDlg::OnClientPlayerName(WPARAM wParam, LPARAM lParam)
+{
+	CString p2 = (LPCTSTR)lParam;
+	m_player2 = p2;
+	UpdateData(FALSE);
+	return 0;
 }
