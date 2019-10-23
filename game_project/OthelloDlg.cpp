@@ -453,6 +453,7 @@ void COthelloDlg::OnDestroy()
 	msg->data.roomID = m_clientSocket->info.roomNum;
 	m_clientSocket->SetWnd(p_hWnd);
 	m_clientSocket->Send((char*)msg, sizeof(createRoom));
+	delete msg;
 }
 
 

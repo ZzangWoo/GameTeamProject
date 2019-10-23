@@ -70,6 +70,7 @@ struct firstConnect {
 struct sendAllRoomListStruct {
 	TCHAR roomNameList[100];
 	int roomListSize;
+	int count;
 };
 
 struct sendAllRoomList {
