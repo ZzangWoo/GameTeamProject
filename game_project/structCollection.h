@@ -157,7 +157,7 @@ struct playerMessage {
 	int size;
 	playerStruct data;
 };
-};
+
 
 // 게임시작 버튼
 struct cardReadyStruct {
