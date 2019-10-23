@@ -58,4 +58,6 @@ protected:
 	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnClickedBtnReady();
+protected:
+	afx_msg LRESULT OnClientOthelloAllReady(WPARAM wParam, LPARAM lParam);
 };

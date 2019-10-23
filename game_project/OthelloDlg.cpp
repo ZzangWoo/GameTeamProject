@@ -59,6 +59,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_WM_DESTROY()
 	ON_MESSAGE(WM_CLIENT_PLAYER_NAME, &COthelloDlg::OnClientPlayerName)
 	ON_BN_CLICKED(IDC_BTN_READY, &COthelloDlg::OnClickedBtnReady)
+	ON_MESSAGE(WM_CLIENT_OTHELLO_ALL_READY, &COthelloDlg::OnClientOthelloAllReady)
 END_MESSAGE_MAP()
 
 
@@ -472,4 +473,11 @@ void COthelloDlg::OnClickedBtnReady()
 	}
 	else
 		AfxMessageBox(_T("플레이어를 기다리는 중입니다."));
+}
+
+
+afx_msg LRESULT COthelloDlg::OnClientOthelloAllReady(WPARAM wParam, LPARAM lParam)
+{
+
+	return 0;
 }
