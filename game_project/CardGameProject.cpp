@@ -6,8 +6,9 @@
 #include "CardGameProject.h"
 #include "afxdialogex.h"
 
-#include "game_projectDlg.h"
 #include "Rock.h"
+#include "game_projectDlg.h"
+
 
 
 // CardGameProject 대화 상자입니다.
@@ -20,10 +21,14 @@ CardGameProject::CardGameProject(CWnd* pParent /*=NULL*/)
 	, editPlayer2Point(_T(""))
 	, testEdit(_T(""))
 	, remainTime(_T(""))
+	, m_player1(_T(""))
+	, m_player2(_T(""))
 {
 
 	nickName = _T("");
 	roomKind = 0;
+	//  m_player1 = _T("");
+	//  m_player2 = _T("");
 }
 
 CardGameProject::~CardGameProject()
@@ -39,9 +44,11 @@ void CardGameProject::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_TEST, testEdit);
 	DDX_Text(pDX, IDC_EDIT_TIME, remainTime);
 	DDX_Control(pDX, IDC_LIST_MSG, listMsg);
-	DDX_Control(pDX, IDC_PLAYER1_NICK, player1Name);
-	DDX_Control(pDX, IDC_PLAYER2_NICK, player2Name);
+	//  DDX_Control(pDX, IDC_PLAYER1_NICK, player1Name);
+	//  DDX_Control(pDX, IDC_PLAYER2_NICK, player2Name);
 	DDX_Control(pDX, IDC_START_BUTTON, startButton);
+	DDX_Text(pDX, IDC_PLAYER1_NICK, m_player1);
+	DDX_Text(pDX, IDC_PLAYER2_NICK, m_player2);
 }
 
 
@@ -53,6 +60,8 @@ BEGIN_MESSAGE_MAP(CardGameProject, CDialog)
 	ON_MESSAGE(WM_CLIENT_CARD_START, &CardGameProject::OnClientCardStart)
 	ON_WM_DESTROY()
 	ON_MESSAGE(WM_CLIENT_RECV_ROOM_ID_TO_CARD, &CardGameProject::OnClientRecvRoomIDToCard)
+	ON_MESSAGE(WM_CLIENT_RSP_RESULT, &CardGameProject::OnClientRspResult)
+	ON_MESSAGE(WM_CLIENT_PLAYER_NAME, &CardGameProject::OnClientPlayerName)
 END_MESSAGE_MAP()
 
 
@@ -68,6 +77,9 @@ int CardGameProject::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//m_clientSocket = new CClientSocket;
 	m_clientSocket = p_dlg->m_clientSocket;
+	m_player1 = m_clientSocket->nickname;
+	m_player2 = _T("기다리는중...");
+
 	p_hWnd = m_clientSocket->m_hWnd;
 	m_clientSocket->SetWnd(this->GetSafeHwnd());
 	
@@ -170,8 +182,8 @@ afx_msg LRESULT CardGameProject::OnClientCardStart(WPARAM wParam, LPARAM lParam)
 
 	if (css->start == TRUE) {
 		//AfxMessageBox(_T("가위바위보 등장!!!"));
-		Rock* dlg = new Rock;
-		dlg->DoModal();
+		r_dlg = new Rock();
+		r_dlg->DoModal();
 	}
 
 	return 0;
@@ -203,6 +215,36 @@ void CardGameProject::OnDestroy()
 	delete msg;
 }
 
+afx_msg LRESULT CardGameProject::OnClientRspResult(WPARAM wParam, LPARAM lParam)
+{
+	int choice = (int)lParam;
+	CString str;
+
+	if (choice == 0) {
+		AfxMessageBox(_T("비겼습니다."));
+		return 0;
+	}
+	else if (choice == -1) {
+		r_dlg->EndDialog(IDOK);
+		str.Format(_T("이겼습니다. 먼저 시작합니다."));
+	}
+	else {
+		r_dlg->EndDialog(IDOK);
+		str.Format(_T("졌습니다. %s님이 먼저 시작합니다."), m_player2);
+	}
+
+	listMsg.InsertString(-1, str);
+	listMsg.SetCurSel(listMsg.GetCount() - 1);
+	return 0;
+}
+
+afx_msg LRESULT CardGameProject::OnClientPlayerName(WPARAM wParam, LPARAM lParam)
+{
+	CString p2 = (LPCTSTR)lParam;
+	m_player2 = p2;
+	UpdateData(FALSE);
+	return 0;
+}
 
 void CardGameProject::OnClickedCardExitButton()
 {

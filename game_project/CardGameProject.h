@@ -4,7 +4,7 @@
 
 
 // CardGameProject 대화 상자입니다.
-
+class Rock;
 class CardGameProject : public CDialog
 {
 	DECLARE_DYNAMIC(CardGameProject)
@@ -32,13 +32,15 @@ public:
 	CListBox listMsg;
 	afx_msg void OnClickedButtonSend();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	CStatic player1Name;
-	CStatic player2Name;
+//	CStatic player1Name;
+//	CStatic player2Name;
 
 protected:
 	afx_msg LRESULT OnClientCardMsgRecv(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClientCardStart(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClientRecvRoomIDToCard(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnClientRspResult(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
 public:
 	CString nickName;
 	afx_msg void OnClickedStartButton();
@@ -48,4 +50,9 @@ public:
 	HWND p_hWnd;
 	afx_msg void OnClickedCardExitButton();
 	int roomKind;
+//	CString m_player1;
+//	CString m_player2;
+	Rock* r_dlg;
+	CString m_player1;
+	CString m_player2;
 };
