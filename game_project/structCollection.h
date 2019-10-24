@@ -197,7 +197,6 @@ struct choiceMessage {
 
 //¿Àµ¨·Î ¸Êº¸³»±â 
 struct mapStruct {
-	int clientID;
 	int roomID;
 	int map[8][8];
 };
