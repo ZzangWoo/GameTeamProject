@@ -396,11 +396,13 @@ void COthelloDlg::ChangeStoneXY(int x1, int x2, int y1, int y2) {
 }
 
 void COthelloDlg::SetCount() {
-	int cnt1 = 0, cnt2 = 0;
+	int cnt1 = 0, cnt2 = 0,p1,p2;
+	if (m_stone_color == 0) { p1 = 1; p2 = 2; }
+	else { p1 = 2; p2 = 1; }
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			if (m_map[j][i] == 1) cnt1++;
-			if (m_map[j][i] == 2) cnt2++;
+			if (m_map[j][i] == p1) cnt1++;
+			if (m_map[j][i] == p2) cnt2++;
 		}
 	}
 	UpdateData(true);
