@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 
 #include "game_projectDlg.h"
+#include "Rock.h"
 
 
 // CardGameProject 대화 상자입니다.
@@ -169,7 +170,9 @@ afx_msg LRESULT CardGameProject::OnClientCardStart(WPARAM wParam, LPARAM lParam)
 	cardStartStruct* css = (cardStartStruct*)lParam;
 
 	if (css->start == TRUE) {
-		AfxMessageBox(_T("가위바위보 등장!!!"));
+		//AfxMessageBox(_T("가위바위보 등장!!!"));
+		Rock* dlg = new Rock;
+		dlg->DoModal();
 	}
 
 	return 0;
