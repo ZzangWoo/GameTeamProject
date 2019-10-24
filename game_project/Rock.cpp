@@ -49,11 +49,13 @@ int Rock::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (pWnd->IsKindOf(RUNTIME_CLASS(COthelloDlg))) {
 		COthelloDlg *p_dlg = (COthelloDlg*)GetParent();
 		m_clientSocket = p_dlg->m_clientSocket;
+		m_clientSocket->info.roomKind = 1004;
 	}
 	//부모가 카드게임인지 검색
 	else if (pWnd->IsKindOf(RUNTIME_CLASS(CardGameProject))) {
 		CardGameProject *p_dlg = (CardGameProject*)GetParent();
 		m_clientSocket = p_dlg->m_clientSocket;
+		m_clientSocket->info.roomKind = 1006;
 	}
 
 	return 0;
@@ -94,6 +96,7 @@ void Rock::OnClickedButtonPaper()
 	temp->size = sizeof(choiceMessage);
 	temp->data.choice = m_choice;
 	temp->data.roomID = m_clientSocket->info.roomNum;
+	//temp->data.roomKind = m_clientSocket->info.roomKind;
 
 	/*포트넘*/
 
@@ -119,6 +122,7 @@ void Rock::OnClickedButtonRock()
 	temp->size = sizeof(choiceStruct);
 	temp->data.choice = m_choice;
 	temp->data.roomID = m_clientSocket->info.roomNum;
+	//temp->data.roomKind = m_clientSocket->info.roomKind;
 	/*포트넘*/
 
 	m_clientSocket->Send((char *)temp, sizeof(choiceMessage) * 2);
@@ -138,6 +142,7 @@ void Rock::OnClickedButtonScissor()
 	temp->size = sizeof(choiceStruct);
 	temp->data.choice = m_choice;
 	temp->data.roomID = m_clientSocket->info.roomNum;
+	//temp->data.roomKind = m_clientSocket->info.roomKind;
 	/*포트넘*/
 
 	m_clientSocket->Send((char *)temp, sizeof(choiceMessage) * 2);

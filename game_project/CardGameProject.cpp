@@ -9,6 +9,8 @@
 #include "Rock.h"
 #include "game_projectDlg.h"
 
+#include "atlimage.h"
+
 
 
 // CardGameProject 대화 상자입니다.
@@ -62,6 +64,10 @@ BEGIN_MESSAGE_MAP(CardGameProject, CDialog)
 	ON_MESSAGE(WM_CLIENT_RECV_ROOM_ID_TO_CARD, &CardGameProject::OnClientRecvRoomIDToCard)
 	ON_MESSAGE(WM_CLIENT_RSP_RESULT, &CardGameProject::OnClientRspResult)
 	ON_MESSAGE(WM_CLIENT_PLAYER_NAME, &CardGameProject::OnClientPlayerName)
+//	ON_WM_PAINT()
+	ON_MESSAGE(WM_CLIENT_SHUFFLE_CARD_RECV, &CardGameProject::OnClientShuffleCardRecv)
+//	ON_WM_PAINT()
+ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -119,6 +125,18 @@ int CardGameProject::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//listMsg.InsertString(-1, str);
 	//listMsg.SetCurSel(listMsg.GetCount() - 1);
 
+	/****************** 카드 이미지 로드 *******************/
+	CString cardImage;
+	for (int i = 0; i < MAX_TOTAL_CARD_COUNT; i++) {
+		cardImage.Format(_T("%d.jpg"), i);
+		m_card_image[i].Load(cardImage);
+	}
+	/*******************************************************/
+
+	CDC		MemDC, *pDC;
+	pDC = this->GetDC();
+	MemDC.CreateCompatibleDC(pDC);
+
 	return 0;
 }
 
@@ -166,10 +184,12 @@ void CardGameProject::OnClickedStartButton()
 		cr->size = sizeof(cardReadyStruct);
 		cr->data.roomID = m_clientSocket->info.roomNum;
 		cr->data.isReady = TRUE;
+		cr->data.roomKind = 1006;
 		m_clientSocket->Send((char*)cr, sizeof(cardReady));
 		delete cr;
 
 		isReady = TRUE;
+		isStart = TRUE;
 	}
 	else {
 		AfxMessageBox(_T("이미 준비되었습니다"));
@@ -179,7 +199,7 @@ void CardGameProject::OnClickedStartButton()
 // 게임시작
 afx_msg LRESULT CardGameProject::OnClientCardStart(WPARAM wParam, LPARAM lParam) {
 	cardStartStruct* css = (cardStartStruct*)lParam;
-
+	
 	if (css->start == TRUE) {
 		//AfxMessageBox(_T("가위바위보 등장!!!"));
 		r_dlg = new Rock();
@@ -235,6 +255,10 @@ afx_msg LRESULT CardGameProject::OnClientRspResult(WPARAM wParam, LPARAM lParam)
 
 	listMsg.InsertString(-1, str);
 	listMsg.SetCurSel(listMsg.GetCount() - 1);
+
+	//Invalidate();
+	draw();
+
 	return 0;
 }
 
@@ -246,10 +270,71 @@ afx_msg LRESULT CardGameProject::OnClientPlayerName(WPARAM wParam, LPARAM lParam
 	return 0;
 }
 
+afx_msg LRESULT CardGameProject::OnClientShuffleCardRecv(WPARAM wParam, LPARAM lParam) {
+	cardArr = (char*)lParam;
+
+	/*CString str;
+	str.Format(_T("%d"), cardArr[2]);
+	AfxMessageBox(str);*/
+
+	cardState = true;
+
+	//Invalidate();
+
+	return 0;
+}
+
 void CardGameProject::OnClickedCardExitButton()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//CardGameProject* dlg = new CardGameProject;
 	//dlg->DestroyWindow();
 	//DestroyWindow();
+}
+
+void CardGameProject::draw() {
+	CPaintDC doc(CWnd::FromHandle(m_hWnd));
+	CPaintDC dcc(this);
+	CClientDC dc(this);
+
+	if (isStart) {
+		CDC		MemDC, *pDC;
+		pDC = this->GetDC();
+		MemDC.CreateCompatibleDC(pDC);
+
+		int index;
+		for (int i = 0; i < MAX_PLAY_CARD_COUNT * 2; i++) {
+			if (cardArr[i] == -1) continue;
+			if (cardState == false) index = 0;
+			else index = cardArr[i] + 1;
+
+			m_card_image[index].BitBlt(dc, (i % 6) * 56, (i / 6) * 76);
+		}
+	}
+}
+
+void CardGameProject::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialog::OnPaint()을(를) 호출하지 마십시오.
+
+	
+
+	if (isStart) {
+		CDC		MemDC, *pDC;
+		pDC = this->GetDC();
+		MemDC.CreateCompatibleDC(pDC);
+
+		int index;
+		for (int i = 0; i < MAX_PLAY_CARD_COUNT * 2; i++) {
+			if (cardArr[i] == -1) continue;
+			if (cardState == false) index = 0;
+			else index = cardArr[i] + 1;
+
+			m_card_image[index].BitBlt(dc, (i % 6) * 56, (i / 6) * 76);
+		}
+	}
+
+	
 }

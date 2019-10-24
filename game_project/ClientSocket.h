@@ -24,6 +24,8 @@
 #define WM_CLIENT_RECV_ROOM_ID_TO_CARD WM_USER+5008
 #define WM_CLIENT_RECV_ROOM_ID_TO_OTHELLO WM_USER+5009
 
+#define WM_CLIENT_SHUFFLE_CARD_RECV WM_USER+5200
+
 class CClientSocket : public CSocket
 {
 public:

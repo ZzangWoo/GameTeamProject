@@ -145,6 +145,15 @@ void CClientSocket::OnReceive(int nErrorCode) {
 		
 		delete srIDs;
 	}
+	/******************* 카드 섞은거 받는 함수 ***********************/
+	else if (header[0] == 5200) {
+		randomCardsStruct* rcs = new randomCardsStruct;
+		ZeroMemory(rcs, sizeof(randomCardsStruct));
+		Receive((char*)rcs, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_SHUFFLE_CARD_RECV, 0, (LPARAM)rcs);
+	}
+	/*****************************************************************/
+
 	/*************** 카드게임 시작하라는 요청 받는 함수 *************/
 	else if (header[0] == 5400) {
 		cardStartStruct* css = new cardStartStruct;

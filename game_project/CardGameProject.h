@@ -3,6 +3,8 @@
 #include "afxwin.h"
 
 
+
+
 // CardGameProject 대화 상자입니다.
 class Rock;
 class CardGameProject : public CDialog
@@ -41,7 +43,9 @@ protected:
 	afx_msg LRESULT OnClientRecvRoomIDToCard(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClientRspResult(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnClientShuffleCardRecv(WPARAM wParam, LPARAM lParam);
 public:
+	void draw();
 	CString nickName;
 	afx_msg void OnClickedStartButton();
 	bool isReady;
@@ -55,4 +59,15 @@ public:
 	Rock* r_dlg;
 	CString m_player1;
 	CString m_player2;
+
+public:
+	CImage m_card_image[MAX_TOTAL_CARD_COUNT];
+//	afx_msg void OnPaint();
+	
+	bool isStart;
+	bool cardState; // false면 뒷면, true면 앞면
+
+	char* cardArr;
+//	afx_msg void OnPaint();
+	afx_msg void OnPaint();
 };

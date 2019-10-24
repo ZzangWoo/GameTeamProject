@@ -1,5 +1,12 @@
 #pragma once
 
+#define MAX_TOTAL_CARD_COUNT 19
+#define MAX_PLAY_CARD_COUNT 18
+
+#define START 1
+#define CONTINUE 2
+#define SHOW_SECOND_CARD 3
+
 struct msgRecvMessage {
 	TCHAR name[50];
 	TCHAR str[2000];
@@ -164,6 +171,7 @@ struct playerMessage {
 struct cardReadyStruct {
 	int roomID;
 	bool isReady;
+	int roomKind;
 };
 
 struct cardReady {
@@ -182,12 +190,36 @@ struct cardStart {
 	int size;
 	cardStartStruct data;
 };
+
+// 카드 섞어달라고 요청
+struct cardRequestShuffleStruct {
+	bool go;
+	int roomID;
+};
+
+struct cardRequestShuffle {
+	int id;
+	int size;
+	cardRequestShuffleStruct data;
+};
+
+// 섞은 카드 저장
+struct randomCardsStruct {
+	char m_card_table[MAX_PLAY_CARD_COUNT * 2];
+};
+
+struct randomCards {
+	int id;
+	int size;
+	randomCardsStruct data;
+};
 /***************************************************************************/
 
 //가위바위보 선택지
 struct choiceStruct {
 	int choice;
 	int roomID;
+	//int roomKind;
 };
 struct choiceMessage {
 	int id;
