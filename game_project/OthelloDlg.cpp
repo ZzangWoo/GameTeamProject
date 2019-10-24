@@ -22,6 +22,7 @@ COthelloDlg::COthelloDlg(CWnd* pParent /*=NULL*/)
 	, m_player1(_T(""))
 	, m_player2(_T("player2\n기다리는 중"))
 	, m_stone_color(0)
+	, m_ready(false)
 {
 	m_map = new int*[8];
 	m_map[0] = new int[8]{ 0,0,0,0,0,0,0,0 };
@@ -63,6 +64,7 @@ BEGIN_MESSAGE_MAP(COthelloDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_READY, &COthelloDlg::OnClickedBtnReady)
 	ON_MESSAGE(WM_CLIENT_OTHELLO_ALL_READY, &COthelloDlg::OnClientOthelloAllReady)
 	ON_MESSAGE(WM_CLIENT_RSP_RESULT, &COthelloDlg::OnClientRspResult)
+	ON_MESSAGE(WM_CLIENT_MAP_RECV, &COthelloDlg::OnClientMapRecv)
 END_MESSAGE_MAP()
 
 
@@ -72,8 +74,15 @@ END_MESSAGE_MAP()
 void COthelloDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (point.x > 420 || point.x < 10 || point.y>420 || point.y < 10) {
-		AfxMessageBox(_T("보드 위를 클릭해주세요."), MB_ICONWARNING);
+	
+	if (point.x > 420 || point.x < 10 || point.y>420 || point.y < 10) 
+		return;
+	if (!m_ready) {
+		AfxMessageBox(_T("준비해주세요"));
+		return;
+	}
+	if (!m_turn) {
+		AfxMessageBox(_T("차례에 둘 수 있습니다."));
 		return;
 	}
 	int m_x = (point.x - 20) / 50, m_y = (point.y - 20) / 50;
@@ -99,19 +108,33 @@ void COthelloDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		ChangeStoneXY(m_x, pointXY[1][0], m_y, pointXY[1][1]);
 		ChangeStoneXY(m_x, pointXY[2][0], m_y, pointXY[2][1]);
 		ChangeStoneXY(m_x, pointXY[3][0], m_y, pointXY[3][1]);
-		DrawStone(m_x * 50 + 21, m_y * 50 + 21);
-		SetCount();
+		m_map[m_y][m_x] = m_stone_color + 1;
+
 		m_count++;
-		m_turn = !m_turn;
-		if (m_count == 61) {
+		if (m_count == 60) {
 			CString str;
 			str.Format(_T("player1: %d player2: %d \r\n winner: %s"), m_1_count, m_2_count, (m_1_count > m_2_count ? "player1" : "player2"));
 			AfxMessageBox(str, MB_OK | MB_ICONINFORMATION);
 		}
+		MapSend();
+
 	}
 	CDialog::OnLButtonDown(nFlags, point);
 }
 
+void COthelloDlg::MapSend() {
+	mapMessage *msg = new mapMessage;
+	msg->id=8;
+	msg->size = sizeof(mapStruct);
+	msg->data.roomID = m_clientSocket->info.roomNum;
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			msg->data.map[i][j] = m_map[j][i];
+		}
+	}
+	m_clientSocket->Send((char*)msg, sizeof(mapMessage));
+	delete msg;
+}
 
 int COthelloDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -226,14 +249,7 @@ int COthelloDlg::DrawStone(int x, int y) {
 	pDC = this->GetDC();
 
 	MemDC.CreateCompatibleDC(pDC);
-	if (!m_turn) {
-		pOldBitmap = MemDC.SelectObject(&m_bitmap[0]);
-		m_map[m_y][m_x] = 1;
-	}
-	else {
-		pOldBitmap = MemDC.SelectObject(&m_bitmap[1]);
-		m_map[m_y][m_x] = 2;
-	}
+	pOldBitmap = MemDC.SelectObject(&m_bitmap[m_map[m_y][m_x] - 1]);
 	pDC->BitBlt(x, y, 48, 48, &MemDC, 0, 0, SRCCOPY);
 
 	MemDC.SelectObject(pOldBitmap);
@@ -244,7 +260,7 @@ int COthelloDlg::DrawStone(int x, int y) {
 int* COthelloDlg::judgeStoneX(int x, int y) {
 	int t, i;
 	int* pointX = new int[2]{ -1,-1 };
-	if (!m_turn) t = 1;
+	if (m_stone_color==0) t = 1;
 	else t = 2;
 
 	for (i = x - 1; i > 0; i--) {
@@ -270,7 +286,7 @@ int* COthelloDlg::judgeStoneX(int x, int y) {
 int* COthelloDlg::judgeStoneY(int x, int y) {
 	int t, i;
 	int* pointY = new int[2]{ -1,-1 };
-	if (!m_turn) t = 1;
+	if (m_stone_color == 0) t = 1;
 	else t = 2;
 
 	for (i = y - 1; i > 0; i--) {
@@ -299,7 +315,7 @@ int** COthelloDlg::judgeStoneXY(int x, int y) {
 		pointXY[a] = new int[2]{ -1,-1 };
 	}
 	int t, i_x, i_y;
-	if (!m_turn) t = 1;
+	if (m_stone_color==0) t = 1;
 	else t = 2;
 	i_x = x - 1;
 	i_y = y - 1;
@@ -356,14 +372,14 @@ int** COthelloDlg::judgeStoneXY(int x, int y) {
 void COthelloDlg::ChangeStoneX(int x1, int x2, int y) {
 	if (x2 == -1) return;
 	for (int i = (x1 < x2 ? x1 + 1 : x2 + 1); i <= (x1 > x2 ? x1 : x2); i++) {
-		DrawStone(i * 50 + 21, y * 50 + 21);
+		m_map[y][i] = m_stone_color + 1;
 	}
 }
 
 void COthelloDlg::ChangeStoneY(int x, int y1, int y2) {
 	if (y2 == -1) return;
 	for (int i = (y1 < y2 ? y1 + 1 : y2 + 1); i <= (y1 > y2 ? y1 : y2); i++) {
-		DrawStone(x * 50 + 21, i * 50 + 21);
+		m_map[i][x] = m_stone_color + 1;
 	}
 }
 
@@ -373,7 +389,7 @@ void COthelloDlg::ChangeStoneXY(int x1, int x2, int y1, int y2) {
 
 	i_y += add;
 	while (i_x <= j_x && i_y <= j_x) {
-		DrawStone(i_x * 50 + 21, i_y * 50 + 21);
+		m_map[i_y][i_x] = m_stone_color + 1;
 		i_x++;
 		i_y += add;
 	}
@@ -471,8 +487,7 @@ void COthelloDlg::OnClickedBtnReady()
 		msg->data.roomID = m_clientSocket->info.roomNum;
 		m_clientSocket->Send((char*)msg, sizeof(readyRecvMessage));
 		delete msg;
-		CButton* pBtn = (CButton*)GetDlgItem(IDC_BTN_READY);
-		pBtn->EnableWindow(FALSE);
+		GetDlgItem(IDC_BTN_READY)->EnableWindow(FALSE);
 	}
 	else
 		AfxMessageBox(_T("플레이어를 기다리는 중입니다."));
@@ -507,6 +522,33 @@ afx_msg LRESULT COthelloDlg::OnClientRspResult(WPARAM wParam, LPARAM lParam)
 		str.Format(_T("졌습니다. %s님이 먼저 시작합니다."), m_player2);
 		m_stone_color = 1;
 	}
-	AfxMessageBox(str);
+	m_ready = true;
+	m_llist_msg.InsertString(-1, str);
+	m_llist_msg.SetCurSel(m_llist_msg.GetCount() - 1);
+	return 0;
+}
+
+
+afx_msg LRESULT COthelloDlg::OnClientMapRecv(WPARAM wParam, LPARAM lParam)
+{
+	mapStruct *map = (mapStruct*)lParam;
+
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if(map->map[i][j] !=0)
+				m_map[j][i] = map->map[i][j];
+		}
+	}
+	delete map;
+
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (m_map[j][i] != 0) {
+				DrawStone(i * 50 + 21, j * 50 + 21);
+			}
+		}
+	}
+	SetCount();
+	m_turn = !m_turn;
 	return 0;
 }
