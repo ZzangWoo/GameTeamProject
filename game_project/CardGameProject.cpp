@@ -295,13 +295,14 @@ void CardGameProject::OnClickedCardExitButton()
 void CardGameProject::draw() {
 	CPaintDC doc(CWnd::FromHandle(m_hWnd));
 	CPaintDC dcc(this);
-	CClientDC dc(this);
+	
 
 	if (isStart) {
 		CDC		MemDC, *pDC;
 		pDC = this->GetDC();
 		MemDC.CreateCompatibleDC(pDC);
-
+		CClientDC dc(this);
+		//m_card_image[1].BitBlt(dc, 280, 456);
 		int index;
 		for (int i = 0; i < MAX_PLAY_CARD_COUNT * 2; i++) {
 			if (cardArr[i] == -1) continue;
