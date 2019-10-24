@@ -51,7 +51,7 @@ int Rock::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		m_clientSocket = p_dlg->m_clientSocket;
 	}
 	//부모가 카드게임인지 검색
-	else if (pWnd->IsKindOf(RUNTIME_CLASS(COthelloDlg))) {
+	else if (pWnd->IsKindOf(RUNTIME_CLASS(CardGameProject))) {
 		CardGameProject *p_dlg = (CardGameProject*)GetParent();
 		m_clientSocket = p_dlg->m_clientSocket;
 	}
