@@ -40,6 +40,13 @@ void CClientSocket::OnReceive(int nErrorCode) {
 	if (header[0] == 4) {
 		SendMessage(m_hWnd, WM_CLIENT_OTHELLO_ALL_READY, 0, (LPARAM)0);
 	}
+	//오델로 맵받기
+	if (header[0] == 12) {
+		mapStruct *map = new mapStruct;
+		ZeroMemory(map, sizeof(mapStruct));
+		Receive((char*)map, header[1]);
+		SendMessage(m_hWnd, WM_CLIENT_MAP_RECV, 0, (LPARAM)map);
+	}
 	// 오델로 방 메세지 받는 함수
 	else if (header[0] == 51) {
 		othelloMsgStruct * msg = new othelloMsgStruct;

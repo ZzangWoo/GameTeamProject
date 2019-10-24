@@ -57,7 +57,7 @@ protected:
 	afx_msg LRESULT OnClientRecvRoomIDToCard(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnDestroy();
-
+	void MapSend();
 protected:
 	afx_msg LRESULT OnClientPlayerName(WPARAM wParam, LPARAM lParam);
 public:
@@ -66,4 +66,8 @@ protected:
 	afx_msg LRESULT OnClientOthelloAllReady(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnClientRspResult(WPARAM wParam, LPARAM lParam);
 
+public:
+	bool m_ready;
+protected:
+	afx_msg LRESULT OnClientMapRecv(WPARAM wParam, LPARAM lParam);
 };
