@@ -508,8 +508,8 @@ afx_msg LRESULT COthelloDlg::OnClientRspResult(WPARAM wParam, LPARAM lParam)
 	CString str;
 
 	if (choice == 0) {
-		str.Format(_T("비겼습니다! 다시 해주세요!"));
-
+		AfxMessageBox(_T("비겼습니다."));
+		return 0;
 	}
 	else if (choice == -1) {
 		r_dlg->EndDialog(IDOK);
